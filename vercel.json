@@ -1,1 +1,1 @@
-{"framework":"vite","rewrites":[{"source":"/((?!api/).*)","destination":"/index.html"}]}
+{"framework":"nextjs"}

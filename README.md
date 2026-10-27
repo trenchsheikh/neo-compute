@@ -1,184 +1,120 @@
-# Neo Compute — Next.js Redesign
-
-**Primary implementation:** [apps/web](./apps/web) — Next.js 16 + React 19 + TypeScript.
-
-This repository now includes the completed premium marketing frontend, detailed GPU intelligence workspace, read-only API, agent onboarding, multi-language integration directory, SEO resources and server-rendered technical documentation. The previous Vite project remains in the repository root as a **production fallback until Vercel cutover**.
-
-**Current release status (27 October 2026):** GitHub Actions [typecheck, production build, and route/API smoke tests](./.github/workflows/neo-web-ci.yml) pass. The Next.js version is **not yet the production deployment** because the Darkbet Vercel team reached its daily API deployment quota. The existing site remains available at [neo-compute.vercel.app](https://neo-compute.vercel.app) and continues to use Vite until migration is completed.
-
-**Start development:** `cd apps/web && npm install && npm run dev`.
-
-**Vercel target settings:** Framework **Next.js**; Root Directory **apps/web**; Output Directory **framework default**. Enable live GPU offers with server-only `VAST_API_KEY`.
-
-**Public agent SDK:** [neo-compute-public](https://github.com/trenchsheikh/neo-compute-public) (TypeScript, Python, OpenAPI, local MCP, Go/HTTP examples).
-
-**What is live in the new code:** provider-backed read-only GPU search and comparison, CSV export, source status, SDK and MCP instructions. **Not live:** stablecoin checkout, GPU provisioning, derivatives execution, remote hosted MCP and historical series.
-
-For the complete new implementation details, see [apps/web/README.md](./apps/web/README.md). The earlier README and planning documents below are retained as development history.
-
----
-
 # Neo Compute
+**The intelligence layer for computing power.**
 
-**Compute intelligence for developers, infrastructure teams, and autonomous agents.**
+Neo Compute is an agent-native, read-only GPU discovery platform. Developers can compare provider-sourced offers and connect applications or AI agents using a simple API, open SDKs and local MCP tooling. Neo doesn't own GPUs or invent market prices.
 
-Neo Compute helps you discover GPU offers, understand provider-reported prices, and connect applications to compute market data. It is designed as an open access layer over existing infrastructure—not another GPU cloud.
+**Website:** [neo-compute.vercel.app](https://neo-compute.vercel.app) · **Public SDK:** [neo-compute-public](https://github.com/trenchsheikh/neo-compute-public) · **Documentation:** [neo-compute.vercel.app/docs](https://neo-compute.vercel.app/docs)
 
-[Explore app](https://neo-compute-darkbet.vercel.app) · [Public TypeScript SDK](https://github.com/trenchsheikh/neo-compute-public) · [Developer documentation](https://neo-compute-darkbet.vercel.app/docs)
+## Product
 
-> **Current release — discovery MVP.** The UI and read-only GPU discovery API are implemented. Live GPU offers require a server-side Vast.ai credential. Stablecoin checkout, GPU provisioning, MCP tools, historical data, and derivatives trading are **not live**. The production site is subject to deployment status and access controls.
-
-## What you can do
-
-| Area | Capability | Status |
+| Product | What it does | Status |
 | --- | --- | --- |
-| GPU Explorer | Filter supported GPU families, search and sort sourced offers | Built; live offers need `VAST_API_KEY` |
-| Compute Markets | Read about rental pricing, benchmarks, and external markets | Informational |
-| Agents | Explore typed machine-readable access and planned automation | Read-only SDK available |
-| API | `GET /api/offers?gpu=H100` on Vercel | Implemented |
-| Documentation | API schema, architecture, environment, limitations | Available in `/docs` |
-| Theme | Responsive light/dark interface | Available |
-| USDC / x402 | Agent payments and procurement | Planned, not enabled |
-| Execution | Actual GPU rentals or compute perpetual orders | Not supported |
+| GPU Explorer | Search supported GPU models, filter real offers, inspect USD/GPU-hour vs USD/instance-hour, export CSV | Read-only, source required |
+| Compare | Compare up to 3 offers within the same browser | Available with real data |
+| Compute Workspace | Provider connection, source freshness, quick access to discovery and integrations | Available |
+| Integration Centre | TypeScript, Python, MCP, OpenAPI, Go, HTTP examples | Available |
+| Agent Tools | Local Python MCP stdio `search_compute` and `compare_compute` | Read-only |
+| Market Intelligence | Explanation of rental rates, indices and external compute markets | Informational |
+| Payments / Procurement | USDC/x402, supplier rental deployment, trading and historical data | **Not implemented** |
 
-## Quick start
+Live offers depend on a configured Vast.ai provider key. There are no demo offers misrepresented as real quotes.
 
-**Requirements:** Node.js 20+ and npm.
+## Stack
+
+- **Next.js 16, React 19, TypeScript**: server-rendered marketing, workspace and documentation.
+- **CSS design tokens**: responsive editorial website and information-dense workspace, dark/light themes.
+- **Vercel serverless route handlers**: allowlisted GPU search and machine-readable capability discovery.
+- **Public SDK repository**: independent TypeScript/Python libraries, OpenAPI specification and a local MCP tool server.
+
+One application lives at the **repository root**. There is no duplicate frontend, monorepo configuration or secondary build system.
+
+## Local setup
+
+Requires Node.js 22+ and npm.
 
 ```bash
 git clone https://github.com/trenchsheikh/neo-compute.git
 cd neo-compute
 npm install
-npm run check
+npm run typecheck
 npm run build
 npm run dev
 ```
 
-Open the local URL printed by Vite. Frontend pages work without any keys. To test the serverless `/api/offers` endpoint locally, use **Vercel CLI** (`vercel dev`), because `vite dev` alone does not execute Vercel Functions.
+Create a local `.env.local` only if you have a private provider key:
 
-### Environment
+```dotenv
+VAST_API_KEY=YOUR_PRIVATE_KEY
+```
 
-Copy `.env.example` as a reference. In **Vercel → neo-compute → Settings → Environment Variables**, set:
+The key is **server-side only**. Never commit the value or prefix the variable with `NEXT_PUBLIC_`.
 
-| Variable | Required? | Description |
+## Environment and Vercel
+
+| Variable | Required | Use |
 | --- | --- | --- |
-| `VAST_API_KEY` | For live prices | Private Vast.ai API key used only in `api/offers.js` |
+| `VAST_API_KEY` | Only for live offers | Server-side Vast.ai read-only API |
+| `NEXT_PUBLIC_SITE_URL` | Optional | Public URL for canonical, sitemap and OpenGraph metadata |
 
-Do **not** prefix the key with `VITE_` or commit it. No payment secrets or database credentials are required for the current build.
+Vercel settings: **Team:** darkbet · **Project:** neo-compute · **Framework:** Next.js · **Root:** project root · **Output:** framework default · **Production branch:** main.
 
-With no key, the API responds with a clearly marked disconnected state; no fictional prices are displayed.
+CI runs `npm run typecheck`, `npm run build` and route/API smoke tests on push and pull request.
 
-## API for developers and AI agents
-
-**Request**
+## API for any programming language
 
 ```http
 GET /api/offers?gpu=H100
 Accept: application/json
 ```
 
-Allowed GPU filters: `H100`, `H200`, `B200`, `A100`, `L40S`, `RTX_4090`, `RTX_5090`, `A6000`.
+Supported GPU filters: `H100`, `H200`, `A100`, `B200`, `L40S`, `RTX_4090`, `RTX_5090`, `A6000`.
 
-**Disconnected example**
+Disconnected response, when the server provider key is unavailable:
 
 ```json
-{
-  "connected": false,
-  "offers": [],
-  "notice": "Add VAST_API_KEY to connect live GPU marketplace offers."
-}
+{"connected":false,"provider":"Vast.ai","offers":[],"notice":"Live offers require a server-side VAST_API_KEY. No sample prices are displayed."}
 ```
 
-**Connected response shape** (structure only; values are not live quotes):
+A connected response includes source-reported `offers` and `observedAt`. The `hourly` and `instanceHourly` fields differ: one is **per GPU-hour**, the other is **per instance-hour**.
 
-```ts
-type GPUOffer = {
-  id: string;
-  gpu: string;
-  provider: string;
-  gpuCount: number;
-  hourly: number;         // USD per GPU-hour
-  instanceHourly: number; // USD per instance-hour
-  region: string;
-  memoryGb: number;
-  link: string;
-};
-
-type OffersResponse = {
-  connected: boolean;
-  offers: GPUOffer[];
-  observedAt?: string; // ISO 8601, when connected
-  notice?: string;
-  error?: string;
-};
-```
-
-An unsupported GPU returns HTTP 400. Provider outages return HTTP 502. Provider observations are not a guarantee of availability, price, rental terms, or performance.
-
-### Using the public SDK
-
-The separately maintained [`neo-compute-public`](https://github.com/trenchsheikh/neo-compute-public) repository contains a small typed client, build instructions, and an example agent integration. Its package is **not published to npm** yet.
+`GET /api/capabilities` exposes currently available integrations and explicitly identifies unimplemented functions. There is no hosted remote MCP endpoint in this version.
 
 ## Architecture
 
 ```text
-React / Vite UI ──────────→ Vercel /api/offers
-   │                             │
-   │                             └── Vast.ai API (private server credential)
-   │
-   └── Public TypeScript SDK ───→ same read-only API contract
-
-Future only: other clouds · history · MCP · x402 / USDC · purchase controls
+app/                  Server-rendered Next.js pages and read-only API routes
+components/           Site and workspace components
+lib/                  Typed compute contract, marketing content and snippets
+public/               Agent discovery documents and static assets
+scripts/smoke.mjs     HTTP route and API acceptance tests
+.github/workflows/    CI typecheck, build and smoke test
+docs/                 Brand/design and editorial references
 ```
 
-- **Frontend:** React 18, TypeScript, React Router, Vite, Lucide icons.
-- **Server:** Vercel Node.js serverless handler, allowlisted GPU input, bounded upstream request timeout.
-- **Data:** Provider-reported listings, displayed with provenance and observation time.
-- **Web3 direction:** EVM-first, with Base and USDC/x402 under evaluation; **no live onchain transactions** in this release.
+### Security principles
 
-## Agent integration guidelines
+- Live provider credentials never reach browser bundles.
+- GPU filters are allowlisted; supplier links are restricted to approved hosts in the workspace.
+- The API surfaces disconnected or upstream-error states rather than fake pricing.
+- Source observations do not constitute bookings or enforceable price quotes.
+- There is no wallet signing, custody, instance provisioning, order execution or autonomous spending.
 
-Agents should treat Neo as an **information source**, not an executor of spending or provisioning.
+## Contributing and SDKs
 
-1. Query a supported GPU model, then check `connected` before consuming `offers`.
-2. Compare `hourly` (per GPU) separately from `instanceHourly` (whole instance).
-3. Treat regions and specifications as provider-reported and verify against the linked supplier before rental.
-4. Do not interpret a provider link as a successful deployment.
-5. Never pass wallet private keys or cloud provider secrets into prompts, URL query strings, or client-side bundles.
+See [the public repository](https://github.com/trenchsheikh/neo-compute-public) for TypeScript and Python client sources, OpenAPI, local MCP setup and Go/HTTP examples. The language SDKs are not published to npm or PyPI yet.
 
-## Repository layout
+Before opening a pull request, run:
 
-```text
-api/offers.js      # Server-side Vast.ai read-only adapter
-src/main.tsx       # Routes, UI components and interactive screens
-src/style.css      # Theme, typography, responsive layout
-index.html         # App entry
-vercel.json        # Vite framework and SPA routing
-.env.example       # Documented configuration
+```bash
+npm run typecheck
+npm run build
 ```
 
-## Roadmap
+CI also runs the complete smoke suite on a running Next.js server.
 
-Planned work includes additional provider adapters, historical pricing with source audit trails, a dedicated MCP server, constrained USDC/x402 access, explicit purchase budgets, provider-approved instance provisioning, and billing reconciliation. None of these should be represented as production-ready until implemented and tested.
+## Product references
 
-## Responsible use
+- [Visual direction](docs/REDESIGN_SPEC.md)
+- [Production copy](docs/WEBSITE_COPY.md)
 
-Respect upstream provider terms, redistribution rights and rate limits. Never invent offers or market prices. Keep upstream credentials server-side. No custodial wallet, derivative-trading or agent auto-spend services are supplied by this repository.
-
-## Contributing
-
-Open a focused issue or pull request with a clear use case, reproduction steps and any relevant API response shape. Run `npm run check` and `npm run build` before requesting review. For shared developer libraries and integration examples, contribute to the [public SDK](https://github.com/trenchsheikh/neo-compute-public).
-
----
-
-**Neo Compute** · Build on existing infrastructure. Make compute easier to discover.
-
-## Design and implementation blueprints
-
-The proposed frontend redesign and migration are **specifications**, not deployed UI changes:
-
-- [Product and visual design — page by page](./docs/REDESIGN_SPEC.md)
-- [Technical refactor and migration plan](./docs/IMPLEMENTATION_PLAN.md)
-- [Finished website and dashboard copy](./docs/WEBSITE_COPY.md)
-
-Migration should run through a preview branch with regression tests before replacing the current deployed app.
+**Neo Compute · Find the computing power you need, with source-aware intelligence.**

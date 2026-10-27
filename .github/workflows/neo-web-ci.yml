@@ -1,21 +1,13 @@
-name: Neo Compute Web CI
+name: Neo Compute CI
 on:
   push:
-    paths:
-      - 'apps/web/**'
-      - '.github/workflows/neo-web-ci.yml'
+    branches: [main]
   pull_request:
-    paths:
-      - 'apps/web/**'
-      - '.github/workflows/neo-web-ci.yml'
 permissions:
   contents: read
 jobs:
   verify-next:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/web
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
