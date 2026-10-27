@@ -1,0 +1,1 @@
+import type{Metadata}from'next';import{OfferCompare}from'@/components/offer-compare';export const metadata:Metadata={title:'Compare GPU Offers',robots:{index:false,follow:true}};export default function Page(){return <OfferCompare/>}
