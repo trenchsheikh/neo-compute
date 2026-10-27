@@ -152,3 +152,13 @@ Open a focused issue or pull request with a clear use case, reproduction steps a
 ---
 
 **Neo Compute** · Build on existing infrastructure. Make compute easier to discover.
+
+## Design and implementation blueprints
+
+The proposed frontend redesign and migration are **specifications**, not deployed UI changes:
+
+- [Product and visual design — page by page](./docs/REDESIGN_SPEC.md)
+- [Technical refactor and migration plan](./docs/IMPLEMENTATION_PLAN.md)
+- [Finished website and dashboard copy](./docs/WEBSITE_COPY.md)
+
+Migration should run through a preview branch with regression tests before replacing the current deployed app.
