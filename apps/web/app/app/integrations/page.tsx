@@ -1,0 +1,1 @@
+import type{Metadata}from'next';import{IntegrationsHub}from'@/components/integrations-hub';export const metadata:Metadata={title:'Developer Integrations',description:'TypeScript, Python, MCP, OpenAPI, Go and HTTP GPU discovery integrations.'};export default function Page(){return <IntegrationsHub/>}
