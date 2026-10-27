@@ -29,3 +29,14 @@ jobs:
         run: npm run typecheck
       - name: Build Next.js
         run: npm run build
+      - name: Smoke test running server
+        run: |
+          set -euo pipefail
+          npm run start -- -p 4173 > /tmp/neo-next.log 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:4173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/smoke.mjs
