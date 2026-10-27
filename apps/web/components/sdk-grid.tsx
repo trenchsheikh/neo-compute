@@ -1,0 +1,3 @@
+import Link from 'next/link';import {ArrowUpRight,Code2,PlugZap} from 'lucide-react';import {SiTypescript,SiPython,SiGo,SiOpenapiinitiative,SiCurl} from 'react-icons/si';import {sdkLinks}from'@/lib/content';
+const logos:Record<string,React.ReactNode>={typescript:<SiTypescript/>,python:<SiPython/>,mcp:<PlugZap/>,openapi:<SiOpenapiinitiative/>,go:<SiGo/>,http:<SiCurl/>};
+export function SdkGrid(){return <div className="sdk-grid">{sdkLinks.map(s=><Link className="sdk-card" key={s.key} href={s.href}><div className={'sdk-icon sdk-'+s.key} aria-hidden="true">{logos[s.key]||<Code2/>}</div><span className="sdk-title">{s.name}<ArrowUpRight size={15}/></span><p>{s.desc}</p><span className="sdk-action">View integration</span></Link>)}</div>}
