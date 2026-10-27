@@ -1,0 +1,8 @@
+export const GPU_MODELS = ['H100','H200','B200','A100','L40S','RTX_4090','RTX_5090','A6000'] as const;
+export type GPUModel = typeof GPU_MODELS[number];
+export type Offer = {id:string;gpu:string;provider:string;gpuCount:number;hourly:number;instanceHourly:number;region:string;memoryGb:number;link:string};
+export type OfferResponse={connected:boolean;offers:Offer[];observedAt?:string;provider?:string;notice?:string;error?:string};
+export function isOffer(value:unknown):value is Offer {if(!value||typeof value!=='object')return false;const x=value as Partial<Offer>;return typeof x.id==='string'&&typeof x.gpu==='string'&&typeof x.provider==='string'&&Number.isFinite(x.gpuCount)&&Number(x.gpuCount)>0&&Number.isFinite(x.hourly)&&Number(x.hourly)>=0&&Number.isFinite(x.instanceHourly)&&Number(x.instanceHourly)>=0&&typeof x.region==='string'&&typeof x.link==='string';}
+export async function loadOffers(gpu:GPUModel,signal?:AbortSignal):Promise<OfferResponse>{const response=await fetch('/api/offers?gpu='+encodeURIComponent(gpu),{signal,cache:'no-store'});let body:OfferResponse;try{body=await response.json() as OfferResponse}catch{throw new Error('The compute API returned an invalid response.')}if(!response.ok)throw new Error(body.error||body.notice||'Source unavailable');if(typeof body.connected!=='boolean'||!Array.isArray(body.offers))throw new Error('Invalid provider response shape');return {...body,offers:body.offers.filter(isOffer)};}
+export const price=(x:number)=>Number.isFinite(x)?'$'+x.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:3}):'Not reported';
+export const isAllowedLink=(url:string)=>{try{return new URL(url).protocol==='https:'&&['cloud.vast.ai','vast.ai'].includes(new URL(url).hostname)}catch{return false}};
