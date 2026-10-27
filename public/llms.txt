@@ -1,0 +1,21 @@
+# Neo Compute
+> A provider-sourced GPU compute discovery and agent integration service.
+
+Website: https://neo-compute.vercel.app
+API discovery: https://neo-compute.vercel.app/api/capabilities
+Main documentation: https://neo-compute.vercel.app/docs
+Connect an agent: https://neo-compute.vercel.app/connect
+Public SDK repository: https://github.com/trenchsheikh/neo-compute-public
+OpenAPI 3.1: https://github.com/trenchsheikh/neo-compute-public/blob/main/openapi/neo-compute.yaml
+MCP installation: https://github.com/trenchsheikh/neo-compute-public/tree/main/examples/agents
+
+## What agents can do today
+- Call GET /api/offers?gpu=H100 for supported model names.
+- Check the connected flag before treating any result as a live provider quote.
+- Read prices in USD per GPU-hour, or entire instance-hour separately.
+- Run the open-source local Python MCP stdio server with search_compute and compare_compute tools.
+
+## What agents cannot do today
+- Neo does not offer remotely hosted MCP, payment signing, GPU rental booking, provisioning, or trading execution.
+- Prices are provider-reported discovery data, not guaranteed orders.
+- Do not attempt to provide cloud credentials or wallet private keys to the public API.
