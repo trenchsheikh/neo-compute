@@ -1,3 +1,23 @@
+# Neo Compute — Next.js Redesign
+
+**Primary implementation:** [apps/web](./apps/web) — Next.js 16 + React 19 + TypeScript.
+
+This repository now includes the completed premium marketing frontend, detailed GPU intelligence workspace, read-only API, agent onboarding, multi-language integration directory, SEO resources and server-rendered technical documentation. The previous Vite project remains in the repository root as a **production fallback until Vercel cutover**.
+
+**Current release status (27 October 2026):** GitHub Actions [typecheck, production build, and route/API smoke tests](./.github/workflows/neo-web-ci.yml) pass. The Next.js version is **not yet the production deployment** because the Darkbet Vercel team reached its daily API deployment quota. The existing site remains available at [neo-compute.vercel.app](https://neo-compute.vercel.app) and continues to use Vite until migration is completed.
+
+**Start development:** `cd apps/web && npm install && npm run dev`.
+
+**Vercel target settings:** Framework **Next.js**; Root Directory **apps/web**; Output Directory **framework default**. Enable live GPU offers with server-only `VAST_API_KEY`.
+
+**Public agent SDK:** [neo-compute-public](https://github.com/trenchsheikh/neo-compute-public) (TypeScript, Python, OpenAPI, local MCP, Go/HTTP examples).
+
+**What is live in the new code:** provider-backed read-only GPU search and comparison, CSV export, source status, SDK and MCP instructions. **Not live:** stablecoin checkout, GPU provisioning, derivatives execution, remote hosted MCP and historical series.
+
+For the complete new implementation details, see [apps/web/README.md](./apps/web/README.md). The earlier README and planning documents below are retained as development history.
+
+---
+
 # Neo Compute
 
 **Compute intelligence for developers, infrastructure teams, and autonomous agents.**
