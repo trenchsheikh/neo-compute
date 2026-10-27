@@ -118,3 +118,9 @@ CI also runs the complete smoke suite on a running Next.js server.
 - [Production copy](docs/WEBSITE_COPY.md)
 
 **Neo Compute · Find the computing power you need, with source-aware intelligence.**
+
+## GitHub → Vercel deployment workflow
+
+The `darkbet/neo-compute` project is connected to the repository's `main` branch. Each push should automatically request a production deployment from Vercel's Git integration; **do not create a second manual deployment** for the same commit. A successful GitHub Actions build is a separate check and does not mean the Vercel deployment itself is live.
+
+If a push does not deploy, inspect the latest deployment SHA and status in Vercel first. Account-level deployment quotas, ignored-build settings, and Git integration permissions can prevent an automatic deployment, even when the repository's CI passes.
