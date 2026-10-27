@@ -1,0 +1,27 @@
+{
+  "name": "Neo Compute",
+  "description": "Open GPU discovery and agent integration",
+  "homepage": "https://neo-compute.vercel.app",
+  "documentation": "https://neo-compute.vercel.app/docs",
+  "api": {
+    "capabilities": "https://neo-compute.vercel.app/api/capabilities",
+    "offers": "https://neo-compute.vercel.app/api/offers?gpu=H100",
+    "schema": "https://github.com/trenchsheikh/neo-compute-public/blob/main/openapi/neo-compute.yaml"
+  },
+  "agent": {
+    "setup": "https://neo-compute.vercel.app/connect",
+    "mcp": {
+      "type": "local-stdio",
+      "guide": "https://github.com/trenchsheikh/neo-compute-public/tree/main/examples/agents",
+      "hosted": false
+    }
+  },
+  "payments": {
+    "live": false,
+    "plannedChain": "EVM",
+    "plannedAsset": "USDC"
+  },
+  "provisioning": {
+    "live": false
+  }
+}
