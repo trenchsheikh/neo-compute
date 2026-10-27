@@ -1,0 +1,6 @@
+import Link from 'next/link';import type{ReactNode}from'react';import {ArrowUpRight}from'lucide-react';
+export function Eyebrow({children}:{children:ReactNode}){return <span className="eyebrow"><span className="eyebrow-dot"/>{children}</span>}
+export function Cta({href,children,outline=false}:{href:string;children:ReactNode;outline?:boolean}){return <Link className={'button '+(outline?'button-outline':'button-primary')} href={href}>{children}<ArrowUpRight size={16}/></Link>}
+export function SectionIntro({eyebrow,title,description,center=false}:{eyebrow:string;title:ReactNode;description?:string;center?:boolean}){return <div className={'section-intro '+(center?'center':'')}><Eyebrow>{eyebrow}</Eyebrow><h2 className="display-heading">{title}</h2>{description&&<p>{description}</p>}</div>}
+export function PageIntro({eyebrow,title,description}:{eyebrow:string;title:ReactNode;description:string}){return <div className="page-intro"><Eyebrow>{eyebrow}</Eyebrow><h1 className="display-heading">{title}</h1><p>{description}</p></div>}
+export function StatusTag({children,type='muted'}:{children:ReactNode;type?:'muted'|'ready'|'planned'}){return <span className={'status-tag '+type}>{children}</span>}
