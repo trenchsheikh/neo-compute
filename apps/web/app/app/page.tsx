@@ -1,0 +1,1 @@
+import type{Metadata}from'next';import{OverviewPanel}from'@/components/overview-panel';export const metadata:Metadata={title:'Compute Workspace',description:'Discover live provider-sourced GPU offers and connect developer integrations.'};export default function Page(){return <OverviewPanel/>}
