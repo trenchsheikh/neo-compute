@@ -1,0 +1,20 @@
+{
+  "name": "Neo Compute",
+  "url": "https://neo-compute.vercel.app",
+  "api": {
+    "offers": "https://neo-compute.vercel.app/api/offers?gpu=H100",
+    "capabilities": "https://neo-compute.vercel.app/api/capabilities"
+  },
+  "integrations": {
+    "sdk": "https://github.com/trenchsheikh/neo-compute-public",
+    "mcpGuide": "https://neo-compute.vercel.app/docs/mcp",
+    "transport": "local-stdio"
+  },
+  "capabilities": {
+    "readOnlyDiscovery": true,
+    "providerConnected": "conditional",
+    "payments": false,
+    "provisioning": false,
+    "remoteMCP": false
+  }
+}
