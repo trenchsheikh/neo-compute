@@ -1,0 +1,1 @@
+import type{Metadata}from'next';import{OfferBrowser}from'@/components/offer-browser';export const metadata:Metadata={title:'GPU Explorer',description:'Compare provider-sourced GPU listings, prices and locations.'};export default function Page(){return <OfferBrowser/>}
